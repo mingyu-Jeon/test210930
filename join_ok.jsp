@@ -1,9 +1,10 @@
-<%@page import="magicwepapp.customDBBean"%>
+<%@page import="java.sql.Timestamp"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%> 
     
 
-<%@ page import="magicwepapp.customBean" %>    
+<%@ page import="magicwepapp.customBean" %>
+<%@ page import="magicwepapp.customDBBean" %>    
 
  
 <html>
@@ -22,73 +23,37 @@
     
     <jsp:useBean id="customBean" class="magicwepapp.customBean" />
     <jsp:setProperty property="*" name="customBean"/>    
-    
-    <%
-        customBean custom = customBean.getInstance();
-    
-      
-        custom.insertCustom(customBean);
+       
+   <%
+   request.setCharacterEncoding("utf-8");// request 한글처리
+   // request 저장된 파라미터 값 가져와서 => 변수에 저장
+   String id=request.getParameter("id");
+   String pwd=request.getParameter("pwd");
+   String nickname=request.getParameter("nickname");
+   String mail1=request.getParameter("mail1");
+   String mail2=request.getParameter("mail2");
+   Timestamp reg=new Timestamp(System.currentTimeMillis());
+   // 패키지 magicwepapp 파일이름 custocbean
+   // 파라미터값을 저장하는 변수 만들고 set,get메서드 만들기
+   // custocbean cb 객체생성 => 기억장소 만들기
+   customBean cb = new customBean();
+   // cb에 <= 파라미터값 저장
+   cb.setId(id);
+   cb.setPwd(pwd);
+   cb.setEmail(mail1+"@"+mail2);
+   cb.setNickname(nickname);
+   cb.setReg(reg);
+   
+   customDBBean custom = customDBBean.getInstance();
+   custom.insertCustom(cb);
+   
+   
     %>
-    
-    <div id="wrap">
-        <br><br>
-        <b><font size="5" color="gray">회원가입 정보를 확인하세요.</font></b>
-        <br><br>
-        <font color="blue"><%=customBean.getName() %></font>님 가입을 축하드립니다.
-        <br><br>
-        
-        
-        <table>
-            <tr>
-                <td id="title">아이디</td>
-                <td><%=customBean.getId() %></td>
-            </tr>
-                        
-            <tr>
-                <td id="title">비밀번호</td>
-                <td><%=customBean.getPw() %></td>
-            </tr>
-                    
-            <tr>
-                <td id="title">이름</td>
-                <td><%=customBean.getName() %></td>
-            </tr>
-                    
-            <tr>
-                <td id="title">닉네임</td>
-                <td><%=customBean.getNickname()%></td>
-            </tr>
-                    
-            <tr>
-                <td id="title">생년월일</td>
-                <td>
-                    <%=customBean.getBirthyy() %>년 
-                    <%=customBean.getBirthmm() %>월 
-                    <%=customBean.getBirthdd() %>일
-                </td>
-            </tr>
-                    
-            <tr>
-                <td id="title">이메일</td>
-                <td>
-                    <%=customBean.getMail1() %>@<%=customBean.getMail2() %>
-                </td>
-            </tr>
-                    
-            <tr>
-                <td id="title">휴대전화</td>
-                <td><%=customBean.getPhone() %></td>
-            </tr>
-            <tr>
-                <td id="title">주소</td>
-                <td>
-                    <%=customBean.getAddress() %>
-                </td>
-            </tr>
-        </table>
-        
-        <br>
-        <input type="button" value="확인">
-    </div>
+   
+ <script type="text/javascript">
+ // "회원가입성공" login.jsp 이동
+   alert("회원가입성공")
+   location.href="login.jsp"; // <<<< 회원가입 완료 후 이동 할 페이지
+</script>
 </body>
 </html>

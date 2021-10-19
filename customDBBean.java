@@ -18,20 +18,10 @@ private static customDBBean instance;
             instance=new customDBBean();
         return instance;
     }
-    public Date stringToDate(customBean custom)
-    {
-        String year = custom.getBirthyy();
-        String month = custom.getBirthmm();
-        String day = custom.getBirthdd();
-        
-        Date birthday = Date.valueOf(year+"-"+month+"-"+day);
-        
-        return birthday;
-        
-    } 
+  
     
     
-    public void insertMember(customBean custom) throws SQLException
+    public void insertCustom(customBean custom) throws SQLException
     {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -45,20 +35,15 @@ private static customDBBean instance;
             
             StringBuffer sql = new StringBuffer();
             sql.append("insert into JSP_MEMBER values");
-            sql.append("(?, ?, ?, ?, ?, ?, ?, ?, sysdate)");        
-            stringToDate(custom);
+            sql.append("(?, ?, ?, ?, ?)");        
+            
             
             pstmt = conn.prepareStatement(sql.toString());
             pstmt.setString(1, custom.getId());
-            pstmt.setString(2, custom.getPw());
-            pstmt.setString(3, custom.getName());
-            pstmt.setString(4, custom.getNickname());
-            pstmt.setDate(5, stringToDate(custom));
-            pstmt.setString(6, custom.getMail1()+"@"+custom.getMail2());
-            pstmt.setString(7, custom.getPhone());
-            pstmt.setString(8, custom.getAddress());
-            
-            
+            pstmt.setString(2, custom.getPwd());
+            pstmt.setString(3, custom.getNickname());
+            pstmt.setString(4, custom.getEmail());
+            pstmt.setInt(5, custom.getNum());            
             pstmt.executeUpdate();
             
             conn.commit(); 
